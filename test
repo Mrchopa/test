@@ -1,0 +1,64 @@
+import java.util.*;
+
+class Solution {
+  public int solution(String[] moves) {
+		int answer = 0;
+		
+		HashSet<String> verticals = new HashSet<String>();
+		HashSet<String> horizontals = new HashSet<String>();
+		
+		int x = 0;
+		int y = 0;
+		
+		for(String s : moves) {
+			if("U".equals(s)) {
+				verticals.add(x + "," + y);
+				y++;
+			}
+			else if("D".equals(s)) {
+				y--;
+				verticals.add(x + "," + y);
+			}
+			else if("L".equals(s)) {
+				x--;
+				horizontals.add(x + "," + y);
+			}
+			else {
+				horizontals.add(x + "," + y);
+				x++;
+			}
+		}
+		
+		HashSet<String> dupl = new HashSet<String>();
+		
+		Iterator<String> iter = verticals.iterator();
+		
+		while(iter.hasNext()) {
+			String curPoint = iter.next();
+			String[] splt = curPoint.split(",");
+			
+			x = Integer.parseInt(splt[0]);
+			y = Integer.parseInt(splt[1]);
+			
+			int left = x-1;
+			int right = x+1;
+			int up = y+1;
+			
+			if(verticals.contains(left + "," + y)) {
+				if(horizontals.contains(left + "," + y) && horizontals.contains(left + "," + up)) {
+					dupl.add(left+","+up+"/"+x+","+up+"/"+x+","+y+"/"+left+","+y);
+					System.out.println(left+","+up+"/"+x+","+up+"/"+x+","+y+"/"+left+","+y);
+				}
+			}
+			
+			if(verticals.contains(right + "," + y)) {
+				if(horizontals.contains(x + "," + y) && horizontals.contains(x + "," + up)) {
+					dupl.add(x+","+up+"/"+right+","+up+"/"+right+","+y+"/"+x+","+y);
+					System.out.println(x+","+up+"/"+right+","+up+"/"+right+","+y+"/"+x+","+y);
+				}
+			}
+		}
+		
+		return dupl.size();
+	}
+}
